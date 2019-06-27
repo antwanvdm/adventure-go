@@ -1,0 +1,39 @@
+{
+  "name": "go",
+  "version": "1.0.0",
+  "description": "...go!",
+  "main": "dev/client/ts/main.ts",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "client:watch": "webpack --watch --mode development",
+    "server:start": "nodemon dev/server/main.js",
+    "server:start:cron": "nodemon dev/server/cli.js"
+  },
+  "author": "antwan <antwanvdm@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.2.7",
+    "node-cron": "^2.0.3"
+  },
+  "devDependencies": {
+    "@types/mapbox-gl": "^0.51.7",
+    "bulma": "^0.7.5",
+    "bulma-pageloader": "^2.1.0",
+    "css-loader": "^2.1.1",
+    "file-loader": "^4.0.0",
+    "mapbox-gl": "^1.0.0",
+    "mini-css-extract-plugin": "^0.6.0",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.1",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "ts-loader": "^6.0.2",
+    "typescript": "^3.5.1",
+    "url-loader": "^2.0.0",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.2"
+  }
+}
