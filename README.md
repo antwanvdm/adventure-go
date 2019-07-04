@@ -19,8 +19,7 @@ of this concept. Time to learn some more!
 5. For client side dev: run `npm run client:watch` in the root folder
 6. For server side dev: run `npm run server:start` (or `npm run
 server:start:cron` for the cronjobs) in the root folder
-7. Have a web server running with the `/docs` folder as root folder
-8. Add the `dev/client/ts/config.json` && `dev/server/config.json` files as
+7. Add the `dev/client/ts/config.json` && `dev/server/config.json` files as
 these were not part of the git code.  Contents should look like the following
 2 snippets for both files:
 ```

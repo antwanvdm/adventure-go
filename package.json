@@ -8,8 +8,8 @@
   },
   "scripts": {
     "client:watch": "webpack --watch --mode development",
-    "server:start": "nodemon dev/server/main.js",
-    "server:start:cron": "nodemon dev/server/cli.js"
+    "server:start": "nodemon --watch dev/server dev/server/main.js",
+    "server:start:cron": "nodemon --watch dev/server dev/server/cli.js"
   },
   "author": "antwan <antwanvdm@gmail.com>",
   "license": "ISC",
