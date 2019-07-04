@@ -13,16 +13,15 @@ MongoClient.connect(url,{useNewUrlParser: true}, function(error, client) {
         return;
     }
     const db = client.db(dbName);
+    const spawns = new Spawns(db);
 
     app.use('/', express.static(path.join(__dirname, '../../docs/')));
-    app.get('/api/generate/spawns', (req, res) => Spawns.fillDatabase(db, () => res.send('ok')));
     app.get('/api/spawns', (req, res) => {
         let lng = req.query.lng;
         let lat = req.query.lat;
 
         if (lng && lat) {
-            const spawns = new Spawns();
-            spawns.getResponse([parseFloat(lng), parseFloat(lat)], db, (docs) => {
+            spawns.getResponse([parseFloat(lng), parseFloat(lat)], (docs) => {
                 res.json(docs);
             });
         } else {

@@ -13,10 +13,11 @@ MongoClient.connect(url, {useNewUrlParser: true}, function (error, client) {
         return;
     }
     const db = client.db(dbName);
-    cron.schedule("* * * * *", () => {
-        Spawns.fillDatabase(db, (result) => {
-            console.log(result);
-        })
+    const spawns = new Spawns(db);
+
+    cron.schedule("* * * * *", async () => {
+        await spawns.deleteTimeBasedSpawns((result) => console.log(`Deleted: ${result.deletedCount}`));
+        await spawns.fillDatabase((result) => console.log(`Inserted: ${result.insertedCount}`));
     });
 });
 
