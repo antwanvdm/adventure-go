@@ -47,9 +47,15 @@ MongoClient.connect(url, {useNewUrlParser: true}, function (error, client) {
     });
     app.get('/api/spawns/catches', (req, res) => {
         let userId = req.query.userId;
-        spawns.getCatches(userId, (docs) => {
-            res.json(docs);
-        });
+
+        if (userId) {
+            spawns.getCatches(userId, (docs) => {
+                res.json(docs);
+            });
+        } else {
+            res.statusCode = 401;
+            res.json({"error": "No userId given in URL"});
+        }
     });
 });
 

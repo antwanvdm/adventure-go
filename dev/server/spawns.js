@@ -67,7 +67,7 @@ class Spawns {
     getCatches(userId, callback)
     {
         const catchCollection = this.db.collection('catches');
-        catchCollection.find({userId: userId}, (error, docs) => callback(docs));
+        catchCollection.find({userId: userId}).toArray((error, docs) => callback(docs));
     }
 
     /**
