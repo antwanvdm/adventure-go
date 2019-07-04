@@ -1,6 +1,7 @@
 class Spawns {
     constructor(db)
     {
+        this.db = db;
         this.totalActiveSpawns = 10000;
         this.collection = db.collection('spawns');
     }
@@ -49,6 +50,27 @@ class Spawns {
     }
 
     /**
+     * @param spawnId
+     * @param userId
+     * @param callback
+     */
+    catchSpawn(spawnId, userId, callback)
+    {
+        const catchCollection = this.db.collection('catches');
+        catchCollection.insert({spawnId: spawnId, userId: userId}, (error, result) => callback(result));
+    }
+
+    /**
+     * @param userId
+     * @param callback
+     */
+    getCatches(userId, callback)
+    {
+        const catchCollection = this.db.collection('catches');
+        catchCollection.find({userId: userId}, (error, docs) => callback(docs));
+    }
+
+    /**
      * @param callback
      */
     async fillDatabase(callback)
@@ -63,7 +85,8 @@ class Spawns {
                 loc: {type: "Point", coordinates: this.getRandomLngLat()},
                 time: Date.now() + (this.getRandomNumberInRange(15, 30, 0) * 30000),
                 value: this.getRandomNumberInRange(1, 10, 0),
-                special: false
+                special: false,
+                number: this.getRandomNumberInRange(1, 151, 0)
             });
         }
 

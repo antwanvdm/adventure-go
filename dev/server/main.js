@@ -7,7 +7,7 @@ const url = config.mongodb.connectionString; //https://stackoverflow.com/a/37374
 const dbName = config.mongodb.dbName;
 const app = express();
 
-MongoClient.connect(url,{useNewUrlParser: true}, function(error, client) {
+MongoClient.connect(url, {useNewUrlParser: true}, function (error, client) {
     if (error !== null) {
         console.log(error);
         return;
@@ -28,6 +28,25 @@ MongoClient.connect(url,{useNewUrlParser: true}, function(error, client) {
             res.statusCode = 401;
             res.json({"error": "No lat/lng given in URL"});
         }
+    });
+    app.post('/api/spawns/catch', (req, res) => {
+        let spawnId = req.body.spawnId;
+        let userId = req.body.userId;
+
+        if (spawnId && userId) {
+            spawns.catchSpawn(req.body.spawnId, req.body.userId, (result) => {
+                res.json(result);
+            });
+        } else {
+            res.statusCode = 401;
+            res.json({"error": "No spawnId/userId given in URL"});
+        }
+    });
+    app.get('/api/spawns/catches', (req, res) => {
+        let userId = req.query.userId;
+        spawns.getCatches(userId, (docs) => {
+            res.json(docs);
+        });
     });
 });
 
