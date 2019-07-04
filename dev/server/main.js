@@ -1,5 +1,6 @@
 const config = require("./config");
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const Spawns = require('./spawns');
 const MongoClient = require('mongodb').MongoClient;
@@ -15,6 +16,8 @@ MongoClient.connect(url, {useNewUrlParser: true}, function (error, client) {
     const db = client.db(dbName);
     const spawns = new Spawns(db);
 
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: true}));
     app.use('/', express.static(path.join(__dirname, '../../docs/')));
     app.get('/api/spawns', (req, res) => {
         let lng = req.query.lng;
