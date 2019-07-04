@@ -1,6 +1,7 @@
 import mapboxgl from "mapbox-gl/dist/mapbox-gl";
 import MapboxUtils from "../helpers/mapboxutils";
 import MapBox from "../maps/mapbox";
+import storage from "../helpers/storage";
 
 export default class SpawnObject {
     public spawn: any;
@@ -30,13 +31,28 @@ export default class SpawnObject {
 
     private createMarker(): void {
         let $el = document.createElement('div');
-        $el.classList.add('marker', 'marker-spawn');
-
+        $el.classList.add('marker', `marker-pokemon-${this.spawn.number}`);
+        $el.addEventListener('click', () => {
+            fetch('/api/spawns/catch', {
+                method: 'POST',
+                body: JSON.stringify({ spawnId: this.spawn._id, userId: 1 }),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }).then(res => res.json())
+              .then(response => {
+                  console.log('Success:', JSON.stringify(response))
+              })
+              .catch(error => console.error('Error:', error));
+           
+        })
         this.active = true;
         this.marker = new mapboxgl.Marker($el)
             .setLngLat(this.spawn.loc.coordinates)
-            .setPopup(new mapboxgl.Popup({offset: 25})
-                .setHTML('<h1>' + this.spawn._id + '</h1>'))
             .addTo(MapBox.i().map);
+    }
+
+    public removeMarker(): void {
+        this.marker.remove();
     }
 }

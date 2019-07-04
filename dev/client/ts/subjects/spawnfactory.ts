@@ -24,6 +24,11 @@ export default class SpawnFactory {
                 return response.json();
             })
             .then((spawns) => {
+                const keys = Object.keys(this.spawnObjects)
+                for (const key of keys) {
+                   this.spawnObjects[key].removeMarker();
+                }
+                this.spawnObjects = {};
                 for (let i = 0; i < spawns.length; i++) {
                     let spawnObject = new SpawnObject(spawns[i]);
                     spawnObject.update([lng, lat]);

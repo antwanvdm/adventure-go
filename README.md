@@ -34,7 +34,8 @@ these were not part of the git code.  Contents should look like the following
         52.09083
       ],
       "container": "map",
-      "style": "mapbox://styles/mapbox/streets-v11"
+      "style": "mapbox://styles/mapbox/streets-v11",
+      "interactive": false
     }
   },
   "geoOptions": {

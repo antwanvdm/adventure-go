@@ -32,13 +32,29 @@ export default class MapBox {
         this._map.once('load', () => this.geoLocation.getCurrentPosition(this.updatePosition.bind(this)));
     }
 
+    private spoofPosition(){
+        const p = this._map.getCenter();
+        setInterval(() => {
+            const offset = 0.005;
+            this.updateActiveMarker({ coords: {
+                longitude: p.lng + offset - (Math.random() * offset * 2),
+                latitude: p.lat + offset - (Math.random() * offset * 2)
+            }})
+        }, 5000)
+    }
+
     /**
      * @param position
      */
     private updatePosition(position: Position): void {
         this.setMapFocus([position.coords.longitude, position.coords.latitude]);
-        this.geoLocation.watchCurrentPosition((position) => this.updateActiveMarker(position));
         document.getElementById('main').classList.remove('is-loading');
+        const spoof = true;
+        if (spoof) {
+            this.spoofPosition();
+        } else {
+            this.geoLocation.watchCurrentPosition((position) => this.updateActiveMarker(position));
+        }
     }
 
     /**
@@ -46,7 +62,7 @@ export default class MapBox {
      */
     private setMapFocus(lngLat: [number, number]) {
         this._map.setCenter(lngLat);
-        this._map.setZoom(18);
+        this._map.setZoom(17);
     }
 
     /**
