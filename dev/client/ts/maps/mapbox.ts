@@ -38,7 +38,7 @@ export default class MapBox {
             const offset = 0.005;
             this.updateActiveMarker({ coords: {
                 longitude: p.lng + offset - (Math.random() * offset * 2),
-                latitude: p.lat + offset - (Math.random() * offset * 2)
+                latitude: p.lat + offset - (Math.random() * offset * 2),
             }})
         }, 5000)
     }
@@ -68,7 +68,7 @@ export default class MapBox {
     /**
      * @param position
      */
-    private updateActiveMarker(position: Position): void {
+    private updateActiveMarker(position: any): void {
         if (this.activeMarker !== null) {
             this.activeMarker.remove();
         }

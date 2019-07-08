@@ -40,11 +40,12 @@ export default class SpawnObject {
                   'Content-Type': 'application/json'
                 }
               }).then(res => res.json())
-              .then(response => {
-                  console.log('Success:', JSON.stringify(response))
+              .then(() => {
+                storage.addSpawn(this.spawn);
+                const bag = storage.find('bag');
+                console.log(bag.length, bag);
               })
               .catch(error => console.error('Error:', error));
-           
         })
         this.active = true;
         this.marker = new mapboxgl.Marker($el)

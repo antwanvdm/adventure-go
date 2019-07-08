@@ -13,8 +13,19 @@ function find(key: string) {
  * @param key 
  * @param state 
  */
-function insert(key: string, state: any) {
+function insert(key: string, state: any, override = false) {
+  if (override === false && localStorage.getItem(key) !== null) return;
   localStorage.setItem(key, JSON.stringify(state));
 }
 
-export default { find, insert };
+/**
+ * 
+ * @param spawn 
+ */
+function addSpawn(spawn: any){
+  const bag = find('bag');
+  bag.push(spawn);
+  insert('bag', bag, true);
+}
+
+export default { find, insert, addSpawn };
