@@ -24,6 +24,9 @@ these were not part of the git code.  Contents should look like the following
 2 snippets for both files:
 ```
 {
+  "languages": [
+    "en"
+  ],
   "mapbox": {
     "accessToken": "<GET FROM MAPBOX WEBSITE>",
     "mapSettings": {

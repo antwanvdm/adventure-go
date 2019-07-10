@@ -24,9 +24,9 @@ export default class Menu extends GUIElement {
                 </a>
                 <div id="navbar" class="navbar-menu">
                     <div class="navbar-start">
-                        <a class="navbar-item">My Catches</a>
-                        <a class="navbar-item">Settings</a>
-                        <a class="navbar-item">About</a>
+                        <a class="navbar-item" data-ml data-ml-key="menu1"></a>
+                        <a class="navbar-item" data-ml data-ml-key="menu2"></a>
+                        <a class="navbar-item" data-ml data-ml-key="menu3"></a>
                     </div>
                 </div>
             </nav>
@@ -34,10 +34,10 @@ export default class Menu extends GUIElement {
         this.renderDone();
     }
 
-    /**
-     * @TODO Implement multilingual components from previous project for copy files
-     */
     renderDone(): void {
+        setTimeout(() => {
+            this.renderProperties();
+        }, 0);
     }
 
     private burgerClickHandler() {
