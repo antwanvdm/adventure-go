@@ -7,6 +7,7 @@ export default class MapBox {
     private _map: mapboxgl.Map;
     private activeMarker: mapboxgl.Marker = null;
     private geoLocation: GeoLocation;
+    private spoof = false;
 
     get map(): mapboxgl.Map {
         return this._map;
@@ -49,8 +50,8 @@ export default class MapBox {
     private updatePosition(position: Position): void {
         this.setMapFocus([position.coords.longitude, position.coords.latitude]);
         document.getElementById('main').classList.remove('is-loading');
-        const spoof = true;
-        if (spoof) {
+
+        if (this.spoof) {
             this.spoofPosition();
         } else {
             this.geoLocation.watchCurrentPosition((position) => this.updateActiveMarker(position));
