@@ -6,6 +6,7 @@
     "removeComments": true,
     "noUnusedParameters": true,
     "strictNullChecks": false,
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "sourceMap": true
   }
