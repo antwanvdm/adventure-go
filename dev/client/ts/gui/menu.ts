@@ -1,6 +1,7 @@
 import GUIElement from "./guielement";
 
 export default class Menu extends GUIElement {
+    private $burger: HTMLElement;
     private $menu: HTMLElement;
 
     constructor() {
@@ -8,8 +9,9 @@ export default class Menu extends GUIElement {
         document.getElementById('main').appendChild(this);
         this.render();
 
-        this.querySelector('.burger').addEventListener('click', (e) => this.burgerClickHandler(e));
         this.$menu = this.querySelector('.navbar-menu');
+        this.$burger = this.querySelector('.burger');
+        this.$burger.addEventListener('click', () => this.burgerClickHandler());
     }
 
     render(): void {
@@ -38,16 +40,12 @@ export default class Menu extends GUIElement {
     renderDone(): void {
     }
 
-    /**
-     * @param e
-     */
-    private burgerClickHandler(e: Event) {
-        let $target = (e.target as HTMLElement);
-        if ($target.classList.contains('is-active')) {
-            $target.classList.remove('is-active');
+    private burgerClickHandler() {
+        if (this.$burger.classList.contains('is-active')) {
+            this.$burger.classList.remove('is-active');
             this.$menu.classList.remove('is-active');
         } else {
-            $target.classList.add('is-active');
+            this.$burger.classList.add('is-active');
             this.$menu.classList.add('is-active');
         }
     }
