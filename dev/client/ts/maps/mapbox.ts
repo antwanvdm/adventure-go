@@ -31,6 +31,7 @@ export default class MapBox {
         mapboxgl.accessToken = config.mapbox.accessToken;
         this._map = new mapboxgl.Map(config.mapbox.mapSettings);
         this._map.once('load', () => this.geoLocation.getCurrentPosition(this.updatePosition.bind(this)));
+        this._map.on('load', () => this.add3D());
     }
 
     private spoofPosition(){
@@ -88,5 +89,44 @@ export default class MapBox {
                 lat: position.coords.latitude
             }
         }));
+    }
+
+    private add3D(){
+        // Insert the layer beneath any symbol layer.
+        const layers = this._map.getStyle().layers as any; //ugly hack for TS
+
+        let labelLayerId;
+        for (let i = 0; i < layers.length; i++) {
+            if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+                labelLayerId = layers[i].id;
+                break;
+            }
+        }
+
+        this._map.addLayer({
+            'id': '3d-buildings',
+            'source': 'composite',
+            'source-layer': 'building',
+            'filter': ['==', 'extrude', 'true'],
+            'type': 'fill-extrusion',
+            'minzoom': 15,
+            'paint': {
+                'fill-extrusion-color': '#aaa',
+
+                // use an 'interpolate' expression to add a smooth transition effect to the
+                // buildings as the user zooms in
+                'fill-extrusion-height': [
+                    "interpolate", ["linear"], ["zoom"],
+                    15, 0,
+                    15.05, ["get", "height"]
+                ],
+                'fill-extrusion-base': [
+                    "interpolate", ["linear"], ["zoom"],
+                    15, 0,
+                    15.05, ["get", "min_height"]
+                ],
+                'fill-extrusion-opacity': .6
+            }
+        }, labelLayerId);
     }
 }
