@@ -57,7 +57,7 @@ class Spawns {
     catchSpawn(spawnId, userId, callback)
     {
         const catchCollection = this.db.collection('catches');
-        catchCollection.insert({spawnId: spawnId, userId: userId}, (error, result) => callback(result));
+        catchCollection.insertOne({spawnId: spawnId, userId: userId}, (error, result) => callback(result));
     }
 
     /**
@@ -81,11 +81,12 @@ class Spawns {
 
         let items = [];
         for (let i = 0; i < newSpawns; i++) {
+            let isSpecial = this.getRandomNumberInRange(1, 4000, 0);
             items.push({
                 loc: {type: "Point", coordinates: this.getRandomLngLat()},
                 time: Date.now() + (this.getRandomNumberInRange(15, 30, 0) * 30000),
                 value: this.getRandomNumberInRange(1, 10, 0),
-                special: false,
+                special: (isSpecial === 1),
                 number: this.getRandomNumberInRange(1, 151, 0)
             });
         }
