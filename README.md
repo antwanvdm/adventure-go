@@ -9,7 +9,9 @@ this seemed the perfect excuse to try and build my own (web based) version
 of this concept. Time to learn some more!
 
 ## Live demo
-(*COMING SOON*)
+The current demo setup can be found [here](https://adventure-go.antwan.eu).
+Try it out by walking around and experiencing spawns/de-spawns around you in
+real time. (Currently working in Rotterdam - The Netherlands only)
 
 ## How to get it running?
 1. Make sure latest versions of node (8.11.2) and npm (6.9.0) are installed
@@ -62,8 +64,14 @@ these were not part of the git code.  Contents should look like the following
 ```
 
 ## Road map
-* Extend cronjob to actually have a logic behind adding & removing items.
+* ~~Extend cronjob to actually have a logic behind adding & removing items.
 The logic should prevent a database which is too heavy and refresh data for
-the clients.
-* Think out the concept further
-
+the clients.~~
+* ~~Embed Pokémon as example of the concept~~
+* Think out the concept further (What will Adventure Go do?)
+* Have a more variations/hierarchy in spawns
+* Make it a PWA
+* Refactor backend code to have logging and more separate files
+* Enrich frontend with better stylingh
+* Make menu work with actual result lists (catches/settings/etc)
+* Have a decent login for users to use the application (SSO Google)
