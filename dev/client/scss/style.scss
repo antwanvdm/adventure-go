@@ -45,10 +45,6 @@ html, body {
   background-repeat: no-repeat;
 }
 
-.marker-spawn {
-  background-image: url('images/spawn-marker.png');
-}
-
 @for $i from 1 through 151 {
   .marker-pokemon-#{$i} {
     background-image: url('images/pokemon/#{$i}.png');
