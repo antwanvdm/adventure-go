@@ -10,13 +10,22 @@ export default class Game {
         this.registerUser();
         MapBox.i();
         new SpawnFactory();
+        this.registerServiceWorker();
+    }
+
+    private registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').then((registration) => {
+                console.log('ServiceWorker registration success: ', registration.scope);
+            }, (err) => console.log('ServiceWorker registration failed: ', err));
+        }
     }
 
     /**
      * Make a initialise compatible with chain
      * @return Game
      */
-    public async initialize(): Promise<any> {
+    public async initialize(): Promise<Game> {
         await Translator.i().setT();
         return this;
     }
@@ -26,7 +35,6 @@ export default class Game {
         this.updateTitle();
         window.addEventListener('translator:languageChange', () => this.updateTitle());
         this.gameLoop();
-
     }
 
     private updateTitle(): void {
