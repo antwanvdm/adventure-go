@@ -16,8 +16,18 @@ MongoClient.connect(url, {useNewUrlParser: true}, function (error, client) {
     const spawns = new Spawns(db);
 
     cron.schedule("* * * * *", async () => {
-        await spawns.deleteTimeBasedSpawns((result) => console.log(`Deleted: ${result.deletedCount}`));
-        await spawns.fillDatabase((result) => console.log(`Inserted: ${result.insertedCount}`));
+        await spawns.deleteTimeBasedSpawns((result) => {
+            if (typeof result.deletedCount === "undefined") {
+                return;
+            }
+            console.log(`Deleted: ${result.deletedCount}`)
+        });
+        await spawns.fillDatabase((result) => {
+            if (typeof result.insertedCount === "undefined") {
+                return;
+            }
+            console.log(`Inserted: ${result.insertedCount}`)
+        });
     });
 });
 
