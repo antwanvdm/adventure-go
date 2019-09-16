@@ -55,6 +55,12 @@ these were not part of the git code.  Contents should look like the following
     "web": 3000,
     "cli": 3001
   },
+  "lngLatGameRange": {
+    "lngFrom": 4.4236095632,
+    "lngTo": 4.5393182311,
+    "latFrom": 51.8849963082,
+    "latTo": 51.9429216581
+  },
   "mongodb": {
     "connectionString": "mongodb://<username>:<password>@localhost:27017/realtimemaps",
     "dbName": "realtimemaps"
@@ -68,10 +74,11 @@ these were not part of the git code.  Contents should look like the following
 The logic should prevent a database which is too heavy and refresh data for
 the clients.~~
 * ~~Embed Pokémon as example of the concept~~
+* ~~Make it a PWA~~
+* Extend PWA functionalities
 * Think out the concept further (What will Adventure Go do?)
 * Have a more variations/hierarchy in spawns
-* Make it a PWA
 * Refactor backend code to have logging and more separate files
-* Enrich frontend with better stylingh
+* Enrich frontend with better styling
 * Make menu work with actual result lists (catches/settings/etc)
 * Have a decent login for users to use the application (SSO Google)

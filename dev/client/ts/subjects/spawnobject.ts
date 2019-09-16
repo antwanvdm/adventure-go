@@ -46,7 +46,7 @@ export default class SpawnObject {
                 console.log(bag.length, bag);
               })
               .catch(error => console.error('Error:', error));
-        })
+        });
         this.active = true;
         this.marker = new mapboxgl.Marker($el)
             .setLngLat(this.spawn.loc.coordinates)

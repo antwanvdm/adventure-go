@@ -7,7 +7,7 @@ const url = config.mongodb.connectionString; //https://stackoverflow.com/a/37374
 const dbName = config.mongodb.dbName;
 const app = express();
 
-MongoClient.connect(url, {useNewUrlParser: true}, function (error, client) {
+MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     if (error !== null) {
         console.log(error);
         return;
@@ -17,16 +17,14 @@ MongoClient.connect(url, {useNewUrlParser: true}, function (error, client) {
 
     cron.schedule("* * * * *", async () => {
         await spawns.deleteTimeBasedSpawns((result) => {
-            if (typeof result.deletedCount === "undefined") {
-                return;
+            if (result !== null && typeof result.deletedCount !== "undefined") {
+                console.log(`Deleted: ${result.deletedCount}`);
             }
-            console.log(`Deleted: ${result.deletedCount}`)
         });
         await spawns.fillDatabase((result) => {
-            if (typeof result.insertedCount === "undefined") {
-                return;
+            if (typeof result.insertedCount !== "undefined") {
+                console.log(`Inserted: ${result.insertedCount}`);
             }
-            console.log(`Inserted: ${result.insertedCount}`)
         });
     });
 });

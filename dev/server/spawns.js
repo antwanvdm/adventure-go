@@ -1,3 +1,5 @@
+const config = require("./config");
+
 class Spawns {
     constructor(db)
     {
@@ -26,7 +28,7 @@ class Spawns {
      */
     getRandomLngLat()
     {
-        return [this.getRandomNumberInRange(4.4236095632, 4.5393182311, 5), this.getRandomNumberInRange(51.8849963082, 51.9429216581, 5)];
+        return [this.getRandomNumberInRange(config.lngLatGameRange.lngFrom, config.lngLatGameRange.lngTo, 5), this.getRandomNumberInRange(config.lngLatGameRange.latFrom, config.lngLatGameRange.latTo, 5)];
     }
 
     /**
