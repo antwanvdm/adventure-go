@@ -15,7 +15,7 @@ class Users {
     {
         this.collection.findOneAndUpdate(
             {twitterId: profile.id},
-            {$set: {twitterId: profile.id}},
+            {$set: {twitterId: profile.id, name: profile.username}},
             {upsert: true},
             (err, user) => {
                 if (err) {
