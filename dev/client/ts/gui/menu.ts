@@ -21,12 +21,14 @@ export default class Menu extends GUIElement {
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
                 </a>
                 <div id="navbar" class="navbar-menu">
                     <div class="navbar-start">
                         <a class="navbar-item" data-ml data-ml-key="menu1"></a>
                         <a class="navbar-item" data-ml data-ml-key="menu2"></a>
                         <a class="navbar-item" data-ml data-ml-key="menu3"></a>
+                        <a href="/auth/twitter" class="navbar-item" data-ml data-ml-key="menu4"></a>
                     </div>
                 </div>
             </nav>

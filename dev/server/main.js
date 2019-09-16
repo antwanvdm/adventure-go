@@ -1,8 +1,12 @@
 const config = require("./config");
 const express = require('express');
+const session = require("express-session");
 const bodyParser = require('body-parser');
+const passport = require('passport');
+const TwitterStrategy = require('passport-twitter').Strategy;
 const path = require('path');
 const Spawns = require('./spawns');
+const Users = require('./users');
 const MongoClient = require('mongodb').MongoClient;
 const url = config.mongodb.connectionString; //https://stackoverflow.com/a/37374366
 const dbName = config.mongodb.dbName;
@@ -15,10 +19,34 @@ MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     }
     const db = client.db(dbName);
     const spawns = new Spawns(db);
+    const users = new Users(db);
 
+    passport.use(new TwitterStrategy({
+            consumerKey: config.twitter.consumerKey,
+            consumerSecret: config.twitter.consumerSecret,
+            callbackURL: config.twitter.callbackUrl
+        },
+        (token, tokenSecret, profile, done) => users.findOrCreate(token, tokenSecret, profile, done)
+    ));
+
+    passport.serializeUser(function (user, done) {
+        done(null, user);
+    });
+
+    passport.deserializeUser(function (user, done) {
+        done(null, user);
+    });
+
+    app.use('/', express.static(path.join(__dirname, '../../docs/')));
+    app.use(session({
+        secret: "todosecret",
+        resave: true,
+        saveUninitialized: true
+    }));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
-    app.use('/', express.static(path.join(__dirname, '../../docs/')));
+    app.use(passport.initialize());
+    app.use(passport.session());
     app.get('/api/spawns', (req, res) => {
         let lng = req.query.lng;
         let lat = req.query.lat;
@@ -57,6 +85,12 @@ MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
             res.json({"error": "No userId given in URL"});
         }
     });
+
+    app.get('/auth/twitter', passport.authenticate('twitter'));
+    app.get('/auth/twitter/callback', passport.authenticate('twitter', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    }));
 });
 
 app.listen(config.ports.web, '0.0.0.0', () => console.log(`App listening on port ${config.ports.web}!`));

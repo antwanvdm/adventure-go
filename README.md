@@ -64,6 +64,11 @@ these were not part of the git code.  Contents should look like the following
   "mongodb": {
     "connectionString": "mongodb://<username>:<password>@localhost:27017/realtimemaps",
     "dbName": "realtimemaps"
+  },
+  "twitter": {
+    "consumerKey": "",
+    "consumerSecret": "",
+    "callbackUrl": "http://localhost:3000/auth/twitter/callback"
   }
 }
 

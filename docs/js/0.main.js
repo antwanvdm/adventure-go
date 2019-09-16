@@ -4,10 +4,10 @@
 /*!*****************************************!*\
   !*** ./dev/client/ts/languages/en.json ***!
   \*****************************************/
-/*! exports provided: title, menu1, menu2, menu3, default */
+/*! exports provided: title, menu1, menu2, menu3, menu4, default */
 /***/ (function(module) {
 
-module.exports = {"title":"Adventure Go!","menu1":"My catches","menu2":"Settings","menu3":"About"};
+module.exports = {"title":"Adventure Go!","menu1":"My catches","menu2":"Settings","menu3":"About","menu4":"Login"};
 
 /***/ })
 
