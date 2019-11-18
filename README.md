@@ -13,6 +13,10 @@ The current demo setup can be found [here](https://adventure-go.antwan.eu).
 Try it out by walking around and experiencing spawns/de-spawns around you in
 real time. (Currently working in Rotterdam - The Netherlands only)
 
+## Relevant links
+* https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04
+* https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04
+
 ## How to get it running?
 1. Make sure latest versions of node (8.11.2) and npm (6.9.0) are installed
 2. Install typescript with `npm install -g typescript`
