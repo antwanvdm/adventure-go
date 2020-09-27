@@ -8,6 +8,7 @@
     "strictNullChecks": false,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
-    "sourceMap": true
+    "sourceMap": true,
+    "lib": ["DOM", "ES2015", "ES5", "DOM.Iterable"]
   }
 }

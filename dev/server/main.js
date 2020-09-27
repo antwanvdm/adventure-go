@@ -12,7 +12,7 @@ const url = config.mongodb.connectionString; //https://stackoverflow.com/a/37374
 const dbName = config.mongodb.dbName;
 const app = express();
 
-MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
+MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (error, client) => {
     if (error !== null) {
         console.log(error);
         return;
