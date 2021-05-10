@@ -1,6 +1,6 @@
 import config from '../config.json';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
-import GeoLocation from "./geolocation";
+import GeoLocation from './geolocation';
 
 export default class MapBox {
     private static instance: MapBox;
@@ -34,15 +34,17 @@ export default class MapBox {
         this._map.on('load', () => this.add3D());
     }
 
-    private spoofPosition(){
+    private spoofPosition() {
         const p = this._map.getCenter();
         setInterval(() => {
             const offset = 0.005;
-            this.updateActiveMarker({ coords: {
-                longitude: p.lng + offset - (Math.random() * offset * 2),
-                latitude: p.lat + offset - (Math.random() * offset * 2),
-            }})
-        }, 5000)
+            this.updateActiveMarker({
+                coords: {
+                    longitude: p.lng + offset - (Math.random() * offset * 2),
+                    latitude: p.lat + offset - (Math.random() * offset * 2),
+                }
+            });
+        }, 5000);
     }
 
     /**
@@ -91,7 +93,7 @@ export default class MapBox {
         }));
     }
 
-    private add3D(){
+    private add3D() {
         // Insert the layer beneath any symbol layer.
         const layers = this._map.getStyle().layers as any; //ugly hack for TS
 
@@ -116,14 +118,14 @@ export default class MapBox {
                 // use an 'interpolate' expression to add a smooth transition effect to the
                 // buildings as the user zooms in
                 'fill-extrusion-height': [
-                    "interpolate", ["linear"], ["zoom"],
+                    'interpolate', ['linear'], ['zoom'],
                     15, 0,
-                    15.05, ["get", "height"]
+                    15.05, ['get', 'height']
                 ],
                 'fill-extrusion-base': [
-                    "interpolate", ["linear"], ["zoom"],
+                    'interpolate', ['linear'], ['zoom'],
                     15, 0,
-                    15.05, ["get", "min_height"]
+                    15.05, ['get', 'min_height']
                 ],
                 'fill-extrusion-opacity': .6
             }

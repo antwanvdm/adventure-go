@@ -1,5 +1,5 @@
 import config from '../config.json';
-import Utils from "./utils";
+import Utils from './utils';
 
 export default class Translator {
     private static instance: Translator;

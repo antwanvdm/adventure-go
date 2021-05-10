@@ -1,4 +1,5 @@
-class Users {
+class Users
+{
     constructor(db)
     {
         this.db = db;

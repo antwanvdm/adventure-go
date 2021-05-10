@@ -1,4 +1,4 @@
-import Translator from "../helpers/translator";
+import Translator from '../helpers/translator';
 
 export default abstract class GUIElement extends HTMLElement {
     protected constructor() {
@@ -12,7 +12,7 @@ export default abstract class GUIElement extends HTMLElement {
             let dataML = $childElement.getAttribute('data-ml');
             let translateString = Translator.i().t($childElement.getAttribute('data-ml-key'));
 
-            if (dataML === "") {
+            if (dataML === '') {
                 $childElement.innerHTML = translateString;
             } else {
                 $childElement.setAttribute(dataML, translateString);

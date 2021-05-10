@@ -1,5 +1,5 @@
-const config = require("./config");
-const cron = require("node-cron");
+const config = require('./config');
+const cron = require('node-cron');
 const express = require('express');
 const Spawns = require('./spawns');
 const MongoClient = require('mongodb').MongoClient;
@@ -15,14 +15,14 @@ MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
     const db = client.db(dbName);
     const spawns = new Spawns(db);
 
-    cron.schedule("* * * * *", async () => {
+    cron.schedule('* * * * *', async () => {
         await spawns.deleteTimeBasedSpawns((result) => {
-            if (result !== null && typeof result.deletedCount !== "undefined") {
+            if (result !== null && typeof result.deletedCount !== 'undefined') {
                 console.log(`Deleted: ${result.deletedCount}`);
             }
         });
         await spawns.fillDatabase((result) => {
-            if (typeof result.insertedCount !== "undefined") {
+            if (typeof result.insertedCount !== 'undefined') {
                 console.log(`Inserted: ${result.insertedCount}`);
             }
         });

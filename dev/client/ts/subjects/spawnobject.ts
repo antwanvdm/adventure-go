@@ -1,7 +1,7 @@
-import mapboxgl from "mapbox-gl/dist/mapbox-gl";
-import MapboxUtils from "../helpers/mapboxutils";
-import MapBox from "../maps/mapbox";
-import storage from "../helpers/storage";
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+import MapboxUtils from '../helpers/mapboxutils';
+import MapBox from '../maps/mapbox';
+import storage from '../helpers/storage';
 
 export default class SpawnObject {
     public spawn: any;
@@ -35,17 +35,17 @@ export default class SpawnObject {
         $el.addEventListener('click', () => {
             fetch('/api/spawns/catch', {
                 method: 'POST',
-                body: JSON.stringify({ spawnId: this.spawn._id, userId: 1 }),
+                body: JSON.stringify({spawnId: this.spawn._id, userId: 1}),
                 headers: {
-                  'Content-Type': 'application/json'
+                    'Content-Type': 'application/json'
                 }
-              }).then(res => res.json())
-              .then(() => {
-                storage.addSpawn(this.spawn);
-                const bag = storage.find('bag');
-                console.log(bag.length, bag);
-              })
-              .catch(error => console.error('Error:', error));
+            }).then(res => res.json())
+                .then(() => {
+                    storage.addSpawn(this.spawn);
+                    const bag = storage.find('bag');
+                    console.log(bag.length, bag);
+                })
+                .catch(error => console.error('Error:', error));
         });
         this.active = true;
         this.marker = new mapboxgl.Marker($el)

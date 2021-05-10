@@ -1,4 +1,4 @@
-import GUIElement from "./guielement";
+import GUIElement from './guielement';
 
 export default class Menu extends GUIElement {
     private $burger: HTMLElement;

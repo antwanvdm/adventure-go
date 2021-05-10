@@ -1,6 +1,7 @@
-const config = require("./config");
+const config = require('./config');
 
-class Spawns {
+class Spawns
+{
     constructor(db)
     {
         this.db = db;
@@ -42,8 +43,8 @@ class Spawns {
         this.collection.aggregate([
             {
                 $geoNear: {
-                    near: {type: "Point", coordinates: lngLat},
-                    distanceField: "metersDifference",
+                    near: {type: 'Point', coordinates: lngLat},
+                    distanceField: 'metersDifference',
                     maxDistance: 100,
                     spherical: true
                 }
@@ -85,7 +86,7 @@ class Spawns {
         for (let i = 0; i < newSpawns; i++) {
             let isSpecial = this.getRandomNumberInRange(1, 4000, 0);
             items.push({
-                loc: {type: "Point", coordinates: this.getRandomLngLat()},
+                loc: {type: 'Point', coordinates: this.getRandomLngLat()},
                 time: Date.now() + (this.getRandomNumberInRange(15, 30, 0) * 30000),
                 value: this.getRandomNumberInRange(1, 10, 0),
                 special: (isSpecial === 1),

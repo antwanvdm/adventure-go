@@ -1,4 +1,4 @@
-import config from "../config.json";
+import config from '../config.json';
 
 type FunctionPositionCallback = (data: Position) => any;
 
@@ -6,8 +6,8 @@ export default class GeoLocation {
     private geoWatchID: number;
 
     constructor() {
-        if (!("geolocation" in navigator)) {
-            throw new Error("Your browser fails");
+        if (!('geolocation' in navigator)) {
+            throw new Error('Your browser fails');
         }
     }
 

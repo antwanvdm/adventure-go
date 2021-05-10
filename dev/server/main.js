@@ -1,6 +1,6 @@
-const config = require("./config");
+const config = require('./config');
 const express = require('express');
-const session = require("express-session");
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const TwitterStrategy = require('passport-twitter').Strategy;
@@ -39,7 +39,7 @@ MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (err
 
     app.use('/', express.static(path.join(__dirname, '../../docs/')));
     app.use(session({
-        secret: "todosecret",
+        secret: 'todosecret',
         resave: true,
         saveUninitialized: true
     }));
@@ -57,7 +57,7 @@ MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (err
             });
         } else {
             res.statusCode = 401;
-            res.json({"error": "No lat/lng given in URL"});
+            res.json({'error': 'No lat/lng given in URL'});
         }
     });
     app.post('/api/spawns/catch', (req, res) => {
@@ -70,7 +70,7 @@ MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (err
             });
         } else {
             res.statusCode = 401;
-            res.json({"error": "No spawnId/userId given in URL"});
+            res.json({'error': 'No spawnId/userId given in URL'});
         }
     });
     app.get('/api/spawns/catches', (req, res) => {
@@ -82,7 +82,7 @@ MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (err
             });
         } else {
             res.statusCode = 401;
-            res.json({"error": "No userId given in URL"});
+            res.json({'error': 'No userId given in URL'});
         }
     });
 
