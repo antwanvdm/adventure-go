@@ -21,32 +21,28 @@ module.exports = {
                     {
                         loader: 'sass-loader',
                         options: {
-                            sourceMap: true,
-                            // options...
+                            sourceMap: true
                         }
                     }
                 ]
             },
             {
                 test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 8192,
-                }
+                type: 'asset/resource'
             }
         ]
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: '../css/style.css'
+            filename: 'css/style.css'
         }),
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".scss"]
     },
     output: {
-        path: path.resolve(__dirname, "docs/js"),
-        publicPath: "/js/", //Only used to fix code splitting... @todo Check why this is needed
-        filename: "main.js"
+        path: path.resolve(__dirname, "docs"),
+        filename: "js/main.js",
+        assetModuleFilename: "images/generated/[hash][ext][query]"
     }
 };

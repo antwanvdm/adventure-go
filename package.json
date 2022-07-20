@@ -8,6 +8,7 @@
   },
   "scripts": {
     "client:watch": "webpack --watch --mode development",
+    "client:build": "webpack --mode production",
     "server:start": "nodemon --watch dev/server dev/server/main.js",
     "server:start:cron": "nodemon --watch dev/server dev/server/cli.js"
   },
@@ -28,7 +29,6 @@
     "bulma": "^0.9.4",
     "bulma-pageloader": "^0.3.0",
     "css-loader": "^6.7.1",
-    "file-loader": "^6.2.0",
     "mapbox-gl": "^2.9.2",
     "mini-css-extract-plugin": "^2.6.1",
     "node-sass": "^7.0.1",
@@ -37,7 +37,6 @@
     "style-loader": "^3.3.1",
     "ts-loader": "^9.3.1",
     "typescript": "^4.7.4",
-    "url-loader": "^4.1.1",
     "uuid": "^8.3.2",
     "webpack": "^5.73.0",
     "webpack-cli": "^4.10.0"

@@ -7,3 +7,4 @@ config.json
 npm-debug.log
 docs/css
 docs/js
+docs/images/generated
