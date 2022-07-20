@@ -1,6 +1,6 @@
 import config from '../config.json';
 
-type FunctionPositionCallback = (data: Position) => any;
+type FunctionPositionCallback = (data: GeolocationPosition) => any;
 
 export default class GeoLocation {
     private geoWatchID: number;

@@ -8,7 +8,7 @@ const dbName = config.mongodb.dbName;
 const app = express();
 
 MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
-    if (error !== null) {
+    if (typeof error !== "undefined") {
         console.log(error);
         return;
     }
@@ -17,7 +17,7 @@ MongoClient.connect(url, {useNewUrlParser: true}, (error, client) => {
 
     cron.schedule('* * * * *', async () => {
         await spawns.deleteTimeBasedSpawns((result) => {
-            if (result !== null && typeof result.deletedCount !== 'undefined') {
+            if (typeof result !== "undefined" && typeof result.deletedCount !== 'undefined') {
                 console.log(`Deleted: ${result.deletedCount}`);
             }
         });

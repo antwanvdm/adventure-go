@@ -13,7 +13,7 @@ const dbName = config.mongodb.dbName;
 const app = express();
 
 MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (error, client) => {
-    if (error !== null) {
+    if (typeof error !== "undefined") {
         console.log(error);
         return;
     }
@@ -53,7 +53,7 @@ MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (err
 
         if (lng && lat) {
             spawns.getResponse([parseFloat(lng), parseFloat(lat)], (docs) => {
-                res.json(docs);
+                res.json(docs ?? []);
             });
         } else {
             res.statusCode = 401;

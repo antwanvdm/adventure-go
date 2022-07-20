@@ -50,7 +50,7 @@ export default class MapBox {
     /**
      * @param position
      */
-    private updatePosition(position: Position): void {
+    private updatePosition(position: GeolocationPosition): void {
         this.setMapFocus([position.coords.longitude, position.coords.latitude]);
         document.getElementById('main').classList.remove('is-loading');
 

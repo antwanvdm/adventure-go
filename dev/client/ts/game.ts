@@ -2,7 +2,7 @@ import MapBox from './maps/mapbox';
 import SpawnFactory from './subjects/spawnfactory';
 import GUI from './gui/gui';
 import Storage from './helpers/storage';
-import uuidv4 from 'uuid/v4';
+import {v4 as uuidv4} from 'uuid';
 import Translator from './helpers/translator';
 
 export default class Game {
