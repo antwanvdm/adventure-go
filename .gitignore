@@ -5,3 +5,5 @@ symbols.json
 .idea
 config.json
 npm-debug.log
+docs/css
+docs/js
