@@ -34,6 +34,10 @@ experiencing spawns/de-spawns around you in real time. (Currently working in Rot
 
 ```
 {
+  "spoof": {
+    "enabled": false,
+    "isIncremental": true
+  },
   "languages": [
     "en"
   ],

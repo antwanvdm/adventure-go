@@ -49,6 +49,10 @@ html, body {
   .marker-pokemon-#{$i} {
     background-image: url('images/pokemon/#{$i}.png');
     background-size: contain;
+
+    &.special {
+      background-image: url('images/pokemon/shiny/#{$i}.png');
+    }
   }
 }
 
