@@ -1,6 +1,6 @@
 @charset "utf-8";
-@import "~bulma/bulma";
-@import "~bulma-pageloader/dist/css/bulma-pageloader";
+@import "~bulma";
+@import "~bulma-pageloader";
 @import "~mapbox-gl/dist/mapbox-gl.css";
 
 html, body {
@@ -18,7 +18,17 @@ html, body {
     pointer-events: none;
     opacity: 0.8;
 
-    &:after {
+    .map-loader {
+      background-color: black;
+      opacity: 0.8;
+      width: 100%;
+      height: 100%;
+      top:0;
+      left:0;
+      position: fixed;
+    }
+
+    .map-loader:after {
       @include loader;
       position: absolute;
       top: calc(50% - 2.5em);
@@ -47,11 +57,19 @@ html, body {
 
 @for $i from 1 through 151 {
   .marker-pokemon-#{$i} {
-    background-image: url('images/pokemon/#{$i}.png');
+    background-image: url('images/pokemon/animated/back/#{$i}.gif');
     background-size: contain;
 
+    &.active {
+      background-image: url('images/pokemon/animated/#{$i}.gif');
+    }
+
     &.special {
-      background-image: url('images/pokemon/shiny/#{$i}.png');
+      background-image: url('images/pokemon/animated/shiny/back/#{$i}.gif');
+
+      &.active{
+        background-image: url('images/pokemon/animated/shiny/#{$i}.gif');
+      }
     }
   }
 }

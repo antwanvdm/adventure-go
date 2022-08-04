@@ -2,12 +2,17 @@ import config from '../config.json';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import GeoLocation from './geolocation';
 
+/**
+ * @see https://labs.mapbox.com/bites/00279/
+ * @see https://api.onwater.io/api/v1/results/51.9240641,4.509943
+ */
 export default class MapBox {
   private static instance: MapBox;
   private _map: mapboxgl.Map;
   private activeMarker: mapboxgl.Marker = null;
   private geoLocation: GeoLocation;
-  private spoof = config.spoof.enabled;
+  private spoof: boolean = config.spoof.enabled;
+  private spoofIncremental: boolean = config.spoof.isIncremental;
 
   get map (): mapboxgl.Map
   {
@@ -33,18 +38,25 @@ export default class MapBox {
   {
     mapboxgl.accessToken = config.mapbox.accessToken;
     this._map = new mapboxgl.Map(config.mapbox.mapSettings);
-    this._map.once('load', () => this.geoLocation.getCurrentPosition((position: GeolocationPosition) => this.updatePosition(position)));
-    this._map.on('load', () => this.add3D());
-    this._map.on('load', () => this.removeLabels());
+    this._map.once('load', () => this.mapLoaded());
+  }
+
+  private mapLoaded ()
+  {
+    this.geoLocation.getCurrentPosition((position: GeolocationPosition) => this.updatePosition(position));
+    // this.add3D()
+    this.removeLabels();
+    const nav = new mapboxgl.NavigationControl();
+    this._map.addControl(nav, 'top-left');
   }
 
   private spoofPosition ()
   {
     setInterval(() => {
       const p = this._map.getCenter();
-      const offset = config.spoof.isIncremental ? 0.0001 : 0.005;
-      const lng = config.spoof.isIncremental ? (p.lng + offset) : (p.lng + offset - (Math.random() * offset * 2));
-      const lat = config.spoof.isIncremental ? (p.lat + offset) : (p.lat + offset - (Math.random() * offset * 2));
+      const offset = this.spoofIncremental ? 0.0001 : 0.005;
+      const lng = this.spoofIncremental ? (p.lng + offset) : (p.lng + offset - (Math.random() * offset * 2));
+      const lat = this.spoofIncremental ? (p.lat + offset) : (p.lat + offset - (Math.random() * offset * 2));
 
       this.updateActiveMarker({
         coords: {
@@ -61,6 +73,7 @@ export default class MapBox {
   private updatePosition (position: GeolocationPosition): void
   {
     this.setMapFocus([position.coords.longitude, position.coords.latitude]);
+    document.querySelector('#map').classList.remove('is-invisible');
     document.getElementById('main').classList.remove('is-loading');
 
     if (this.spoof) {
@@ -76,7 +89,6 @@ export default class MapBox {
   private setMapFocus (lngLat: [number, number])
   {
     this._map.setCenter(lngLat);
-    this._map.setZoom(17);
   }
 
   /**
@@ -84,16 +96,16 @@ export default class MapBox {
    */
   private updateActiveMarker (position: any): void
   {
-    if (this.activeMarker !== null) {
-      this.activeMarker.remove();
+    if (this.activeMarker === null) {
+      let el = document.createElement('div');
+      el.classList.add('marker');
+
+      this.activeMarker = new mapboxgl.Marker(el)
+        .setLngLat([position.coords.longitude, position.coords.latitude])
+        .addTo(this._map);
+    } else {
+      this.activeMarker.setLngLat([position.coords.longitude, position.coords.latitude]);
     }
-
-    let el = document.createElement('div');
-    el.classList.add('marker');
-
-    this.activeMarker = new mapboxgl.Marker(el)
-      .setLngLat([position.coords.longitude, position.coords.latitude])
-      .addTo(this._map);
 
     this.setMapFocus([position.coords.longitude, position.coords.latitude]);
     window.dispatchEvent(new CustomEvent('mapbox:activeMarkerUpdate', {

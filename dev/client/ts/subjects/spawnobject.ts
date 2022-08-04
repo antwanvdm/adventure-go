@@ -39,6 +39,7 @@ export default class SpawnObject {
       el.classList.add('special');
     }
     el.addEventListener('click', () => {
+      el.classList.add('active');
       fetch('/api/spawns/catch', {
         method: 'POST',
         body: JSON.stringify({ spawnId: this.spawn._id, userId: 1 }),
