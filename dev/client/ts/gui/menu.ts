@@ -11,30 +11,21 @@ export default class Menu extends GUIElement {
     this.render();
 
     this.menu = this.querySelector('.navbar-menu');
-    this.burger = this.querySelector('.burger');
+    this.burger = this.querySelector('.pokeball');
     this.burger.addEventListener('click', () => this.burgerClickHandler());
   }
 
   render (): void
   {
     this.innerHTML = `
-            <nav class="navbar" role="navigation" aria-label="main navigation">
-                <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
-                <div id="navbar" class="navbar-menu">
-                    <div class="navbar-start">
-                        <a class="navbar-item" data-ml data-ml-key="menu1"></a>
-                        <a class="navbar-item" data-ml data-ml-key="menu2"></a>
-                        <a class="navbar-item" data-ml data-ml-key="menu3"></a>
-                        <a href="/auth/twitter" class="navbar-item" data-ml data-ml-key="menu4"></a>
-                    </div>
-                </div>
-            </nav>
-        `;
+      <button class="pokeball"></button>
+      <nav class="navigation is-hidden" role="navigation" aria-label="main navigation">
+        <a class="navbar-item" data-ml data-ml-key="menu1"></a>
+        <a class="navbar-item" data-ml data-ml-key="menu2"></a>
+        <a class="navbar-item" data-ml data-ml-key="menu3"></a>
+        <a href="/auth/twitter" class="navbar-item" data-ml data-ml-key="menu4"></a>
+      </nav>
+    `;
     this.renderDone();
   }
 

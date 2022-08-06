@@ -1,6 +1,7 @@
 import config from '../config.json';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import GeoLocation from './geolocation';
+import { MapTouchEvent } from 'mapbox-gl';
 
 /**
  * @see https://labs.mapbox.com/bites/00279/
@@ -13,6 +14,7 @@ export default class MapBox {
   private geoLocation: GeoLocation;
   private spoof: boolean = config.spoof.enabled;
   private spoofIncremental: boolean = config.spoof.isIncremental;
+  private lastMouseMovePosition: { x: number, y: number };
 
   get map (): mapboxgl.Map
   {
@@ -39,6 +41,9 @@ export default class MapBox {
     mapboxgl.accessToken = config.mapbox.accessToken;
     this._map = new mapboxgl.Map(config.mapbox.mapSettings);
     this._map.once('load', () => this.mapLoaded());
+
+    this._map.on('touchstart', (e: MapTouchEvent) => this.lastMouseMovePosition = e.point);
+    this._map.on('touchmove', (e: MapTouchEvent) => this.touchMoveHandler(e));
   }
 
   private mapLoaded ()
@@ -48,6 +53,26 @@ export default class MapBox {
     this.removeLabels();
     const nav = new mapboxgl.NavigationControl();
     this._map.addControl(nav, 'top-left');
+  }
+
+  /**
+   * Enable rotating with 1 finger interaction. Mapbox doesn't offer this by default it seems
+   *
+   * @param e
+   * @private
+   */
+  private touchMoveHandler (e: MapTouchEvent)
+  {
+    let bearingTo = 0;
+    if (e.point.x < this.lastMouseMovePosition.x) {
+      bearingTo = this._map.getBearing() + 2;
+      this._map.rotateTo(this._map.getBearing() + 2, { duration: 0 });
+    } else {
+      bearingTo = this._map.getBearing() - 2;
+    }
+
+    this._map.rotateTo(bearingTo, { duration: 0 });
+    this.lastMouseMovePosition = { x: e.point.x, y: e.point.y };
   }
 
   private spoofPosition ()
