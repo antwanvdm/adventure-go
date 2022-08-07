@@ -18,6 +18,8 @@ experiencing spawns/de-spawns around you in real time. (Currently working in Rot
 
 * https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04
 * https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04
+* https://www.youtube.com/watch?v=ElahzmTPCYE (adb pair needed instead of adb connect from article below)
+* https://dev.to/haideralipunjabi/testing-pwas-on-mobile-devices-during-development-22mm
 
 ## How to get it running?
 

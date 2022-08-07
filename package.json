@@ -24,7 +24,7 @@
     "passport-twitter": "^1.0.4"
   },
   "devDependencies": {
-    "@types/mapbox-gl": "^2.7.3",
+    "@types/mapbox-gl": "^2.7.5",
     "@types/uuid": "^8.3.4",
     "bulma": "^0.9.4",
     "bulma-pageloader": "^0.3.0",

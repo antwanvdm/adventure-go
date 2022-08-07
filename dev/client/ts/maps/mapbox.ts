@@ -2,6 +2,7 @@ import config from '../config.json';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import GeoLocation from './geolocation';
 import { MapTouchEvent } from 'mapbox-gl';
+import MapboxUtils from '../helpers/mapboxutils';
 
 /**
  * @see https://labs.mapbox.com/bites/00279/
@@ -63,6 +64,11 @@ export default class MapBox {
    */
   private touchMoveHandler (e: MapTouchEvent)
   {
+    //Make sure we don't interrupt the zoom experience
+    if (this._map.isZooming() || e.points.length > 1) {
+      return;
+    }
+
     let bearingTo = 0;
     if (e.point.x < this.lastMouseMovePosition.x) {
       bearingTo = this._map.getBearing() + 2;
@@ -121,15 +127,27 @@ export default class MapBox {
    */
   private updateActiveMarker (position: any): void
   {
+    //TODO the spawns should be push from the server instead of pulled from the client.
+    let getSpawns = false;
     if (this.activeMarker === null) {
       let el = document.createElement('div');
       el.classList.add('marker');
 
-      this.activeMarker = new mapboxgl.Marker(el)
+      this.activeMarker = new mapboxgl.Marker({
+        element: el,
+        anchor: 'bottom'
+      })
         .setLngLat([position.coords.longitude, position.coords.latitude])
         .addTo(this._map);
+      getSpawns = true;
     } else {
       this.activeMarker.setLngLat([position.coords.longitude, position.coords.latitude]);
+    }
+
+    //Don't update anything when we didn't move anyway
+    let meterDifference = MapboxUtils.getLatLngDistanceInMeters([this.activeMarker.getLngLat().lng, this.activeMarker.getLngLat().lat], [position.coords.longitude, position.coords.latitude]);
+    if (meterDifference === 0 && getSpawns === false) {
+      return;
     }
 
     this.setMapFocus([position.coords.longitude, position.coords.latitude]);

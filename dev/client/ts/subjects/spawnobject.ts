@@ -39,7 +39,6 @@ export default class SpawnObject {
       el.classList.add('special');
     }
     el.addEventListener('click', () => {
-      el.classList.add('active');
       fetch('/api/spawns/catch', {
         method: 'POST',
         body: JSON.stringify({ spawnId: this.spawn._id, userId: 1 }),
@@ -55,8 +54,17 @@ export default class SpawnObject {
         .catch(error => console.error('Error:', error));
     });
     this.active = true;
-    this.marker = new mapboxgl.Marker(el)
+    this.marker = new mapboxgl.Marker({
+      element: el,
+      anchor: 'bottom'
+    })
       .setLngLat(this.spawn.loc.coordinates)
+      .setPopup(
+        new mapboxgl.Popup({ offset: 25 }) // add popups
+          .setHTML(
+            `<h3>Hello!</h3><div class="popup-image-${this.spawn.number} ${this.spawn.special ? 'special' : ''}"></div>`
+          )
+      )
       .addTo(MapBox.i().map);
   }
 
