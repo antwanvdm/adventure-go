@@ -1,4 +1,5 @@
 import Storage from './storage';
+import config from '../config.json';
 
 /**
  * Wrapper class for native WebSocket
@@ -18,7 +19,7 @@ export default class WS {
 
   private initialize ()
   {
-    this.socket = new WebSocket('ws://localhost:3000');
+    this.socket = new WebSocket(config.websocketUrl);
     console.log(this.socket);
 
     //Send our location as start

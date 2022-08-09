@@ -21,6 +21,10 @@ experiencing spawns/de-spawns around you in real time. (Currently working in Rot
 * https://www.youtube.com/watch?v=ElahzmTPCYE (adb pair needed instead of adb connect from article below)
 * https://dev.to/haideralipunjabi/testing-pwas-on-mobile-devices-during-development-22mm
 
+```
+pm2 restart main  --max-memory-restart 80M
+```
+
 ## How to get it running?
 
 1. Make sure latest versions of node (8.11.2) and npm (6.9.0) are installed
