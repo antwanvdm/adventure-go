@@ -5,38 +5,65 @@ export default class SpawnFactory {
 
   constructor ()
   {
-    window.addEventListener('mapbox:activeMarkerUpdate', (e) => {
+    window.addEventListener('ws:message:spawns', (e) => {
       let data = (e as CustomEvent).detail;
-      this.loadNewSpawns(data.lng, data.lat);
-      this.updateCurrentSpawns(data.lng, data.lat);
+      console.log('new', data);
+      this.loadNewSpawns(data);
+    });
+    window.addEventListener('ws:message:delete', (e) => {
+      let data = (e as CustomEvent).detail;
+      console.log('remove', data);
+      this.removeSpawns(data);
     });
   }
 
   /**
-   * @param lng
-   * @param lat
+   *
+   * @param newSpawns
+   * @private
    */
-  private loadNewSpawns (lng: number, lat: number)
+  private loadNewSpawns (newSpawns: any)
   {
-    fetch(`/api/spawns?lng=${lng}&lat=${lat}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
+    for (const newSpawn of newSpawns) {
+      let spawnExists = false;
+      for (const [key, currentSpawn] of Object.entries(this.spawnObjects)) {
+        if (newSpawn.number === currentSpawn.spawn.number) {
+          spawnExists = true;
         }
-        return response.json();
-      })
-      .then((spawns) => {
-        const keys = Object.keys(this.spawnObjects);
-        for (const key of keys) {
-          this.spawnObjects[key].removeMarker();
+      }
+
+      if (spawnExists === false) {
+        let spawnObject = new SpawnObject(newSpawn, (id: string) => this.removeSpawn(id));
+        this.spawnObjects[spawnObject.spawn._id] = spawnObject;
+      }
+    }
+  }
+
+  /**
+   *
+   * @param ids
+   * @private
+   */
+  private removeSpawns (ids: any)
+  {
+    for (const id of ids) {
+      for (const [key, currentSpawn] of Object.entries(this.spawnObjects)) {
+        if (id === currentSpawn.spawn._id) {
+          this.removeSpawn(key);
         }
-        this.spawnObjects = {};
-        for (let i = 0; i < spawns.length; i++) {
-          let spawnObject = new SpawnObject(spawns[i]);
-          spawnObject.update([lng, lat]);
-          this.spawnObjects[spawnObject.spawn._id] = spawnObject;
-        }
-      });
+      }
+    }
+  }
+
+  /**
+   *
+   * @param id
+   * @private
+   */
+  private removeSpawn (id: string)
+  {
+    this.spawnObjects[id].removeMarker();
+    delete this.spawnObjects[id];
   }
 
   /**

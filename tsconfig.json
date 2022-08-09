@@ -2,13 +2,13 @@
   "compilerOptions": {
     "strict": true,
     "target": "es6",
-    "module": "esnext",
+    "module": "ES2020",
     "removeComments": true,
     "noUnusedParameters": true,
     "strictNullChecks": false,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "sourceMap": true,
-    "lib": ["DOM", "ES2015", "ES5", "DOM.Iterable"]
+    "lib": ["DOM", "ES2021", "DOM.Iterable"]
   }
 }

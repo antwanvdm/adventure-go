@@ -45,6 +45,9 @@ class Spawns
           near: { type: 'Point', coordinates: lngLat },
           distanceField: 'metersDifference',
           maxDistance: 100,
+          query: {
+            time: { $gt: Date.now() }
+          },
           spherical: true
         }
       }
@@ -74,6 +77,7 @@ class Spawns
 
   /**
    * @param callback
+   * @return void
    */
   async fillDatabase(callback)
   {
@@ -104,11 +108,19 @@ class Spawns
   /**
    * @param callback
    */
-  async deleteTimeBasedSpawns(callback)
+  deleteTimeBasedSpawns(callback)
   {
-    await this.collection.deleteMany({
-      time: { $lt: Date.now() }
-    }, (error, result) => callback(result));
+    this.collection.find({ time: { $lt: Date.now() } }).toArray(async (error, docs) => {
+      //First get all the ID's, because the client need them
+      let ids = docs.map((doc) => {
+        return doc._id;
+      });
+
+      this.collection.deleteMany({
+        _id: { $in: ids }
+      }, (error, result) => console.log(`Deleted: ${result.deletedCount}`));
+      callback(ids);
+    });
   }
 }
 

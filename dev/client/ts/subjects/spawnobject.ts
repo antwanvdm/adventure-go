@@ -7,10 +7,15 @@ export default class SpawnObject {
   public spawn: any;
   private marker: mapboxgl.Marker;
   private active: boolean = false;
+  private readonly outOfRangeCallback: any;
+  private eventCallback = (e: Event) => this.checkOutOfRange((e as CustomEvent).detail);
 
-  constructor (spawn: any)
+  constructor (spawn: any, outOfRangeCallback: any)
   {
     this.spawn = spawn;
+    this.createMarker();
+    this.outOfRangeCallback = outOfRangeCallback;
+    window.addEventListener('position:update', this.eventCallback);
   }
 
   /**
@@ -68,8 +73,16 @@ export default class SpawnObject {
       .addTo(MapBox.i().map);
   }
 
+  private checkOutOfRange (location: GeolocationPosition)
+  {
+    if (MapboxUtils.getLatLngDistanceInMeters(this.spawn.loc.coordinates, [location.coords.longitude, location.coords.latitude]) > 100) {
+      this.outOfRangeCallback(this.spawn._id);
+    }
+  }
+
   public removeMarker (): void
   {
     this.marker.remove();
+    window.removeEventListener('position:update', this.eventCallback);
   }
 }

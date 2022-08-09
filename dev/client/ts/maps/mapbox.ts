@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import GeoLocation from './geolocation';
 import { MapTouchEvent } from 'mapbox-gl';
 import MapboxUtils from '../helpers/mapboxutils';
+import WS from '../helpers/websocket';
 
 /**
  * @see https://labs.mapbox.com/bites/00279/
@@ -84,7 +85,7 @@ export default class MapBox {
   private spoofPosition ()
   {
     setInterval(() => {
-      const p = this._map.getCenter();
+      const p = this.activeMarker ? this.activeMarker.getLngLat() : this._map.getCenter();
       const offset = this.spoofIncremental ? 0.0001 : 0.005;
       const lng = this.spoofIncremental ? (p.lng + offset) : (p.lng + offset - (Math.random() * offset * 2));
       const lat = this.spoofIncremental ? (p.lat + offset) : (p.lat + offset - (Math.random() * offset * 2));
@@ -106,7 +107,9 @@ export default class MapBox {
     this.setMapFocus([position.coords.longitude, position.coords.latitude]);
     document.querySelector('#map').classList.remove('is-invisible');
     document.getElementById('main').classList.remove('is-loading');
+    new WS(position);
 
+    this.updateActiveMarker(position);
     if (this.spoof) {
       this.spoofPosition();
     } else {
@@ -119,6 +122,9 @@ export default class MapBox {
    */
   private setMapFocus (lngLat: [number, number])
   {
+    if (this._map.isZooming()){
+      return;
+    }
     this._map.setCenter(lngLat);
   }
 
@@ -127,8 +133,8 @@ export default class MapBox {
    */
   private updateActiveMarker (position: any): void
   {
-    //TODO the spawns should be push from the server instead of pulled from the client.
-    let getSpawns = false;
+    let meterDifference = this.activeMarker ? MapboxUtils.getLatLngDistanceInMeters([this.activeMarker.getLngLat().lng, this.activeMarker.getLngLat().lat], [position.coords.longitude, position.coords.latitude]) : 0;
+
     if (this.activeMarker === null) {
       let el = document.createElement('div');
       el.classList.add('marker');
@@ -139,23 +145,18 @@ export default class MapBox {
       })
         .setLngLat([position.coords.longitude, position.coords.latitude])
         .addTo(this._map);
-      getSpawns = true;
     } else {
       this.activeMarker.setLngLat([position.coords.longitude, position.coords.latitude]);
     }
 
-    //Don't update anything when we didn't move anyway
-    let meterDifference = MapboxUtils.getLatLngDistanceInMeters([this.activeMarker.getLngLat().lng, this.activeMarker.getLngLat().lat], [position.coords.longitude, position.coords.latitude]);
-    if (meterDifference === 0 && getSpawns === false) {
+    //Don't update anything when we didn't move anyway (took 2 meter to prevent updates while sitting on the couch)
+    if (meterDifference <= 2) {
       return;
     }
 
     this.setMapFocus([position.coords.longitude, position.coords.latitude]);
-    window.dispatchEvent(new CustomEvent('mapbox:activeMarkerUpdate', {
-      detail: {
-        lng: position.coords.longitude,
-        lat: position.coords.latitude
-      }
+    window.dispatchEvent(new CustomEvent('position:update', {
+      detail: position
     }));
   }
 

@@ -3,7 +3,7 @@ import config from '../config.json';
 type FunctionPositionCallback = (data: GeolocationPosition) => any;
 
 export default class GeoLocation {
-  private geoWatchID: number;
+  private geoWatchID: number = 0;
 
   constructor ()
   {
@@ -27,6 +27,10 @@ export default class GeoLocation {
    */
   public watchCurrentPosition (callback: FunctionPositionCallback)
   {
+    if (this.geoWatchID !== 0) {
+      return;
+    }
+
     this.geoWatchID = navigator.geolocation.watchPosition(callback, () => {
       //@todo ERROR
     }, config.geoOptions);
