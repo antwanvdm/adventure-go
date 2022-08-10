@@ -20,7 +20,6 @@ export default class WS {
   private initialize ()
   {
     this.socket = new WebSocket(config.websocketUrl);
-    console.log(this.socket);
 
     //Send our location as start
     this.socket.addEventListener('open', () => {

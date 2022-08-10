@@ -125,6 +125,14 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (e
 
       switch (data.type) {
         case 'POSITION':
+          //Check if we got the same user, if so: remove the old instance.
+          const subscriber = Object.entries(subscribers).find(([id, sub]) => {
+            return sub.clientId === data.id;
+          });
+          if (subscriber) {
+            delete subscribers[subscriber[0]];
+          }
+
           subscribers[userId] = {
             clientId: data.id,
             ws: ws,
