@@ -15,10 +15,11 @@ const http = require('http');
 const WebSocket = require('ws');
 const server = http.createServer(app);
 const EventEmitter = require('events');
+const fs = require('node:fs');
 const eventEmitter = new EventEmitter();
 
 //TODO: SPLIT UP: SUCH A MESS...
-MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {
+MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (error, client) => {
   if (typeof error !== 'undefined') {
     console.log(error);
     return;
@@ -50,7 +51,7 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (e
     saveUninitialized: true
   }));
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.urlencoded({extended: true}));
   app.use(passport.initialize());
   app.use(passport.session());
   app.post('/api/spawns/catch', (req, res) => {
@@ -63,7 +64,7 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (e
       });
     } else {
       res.statusCode = 401;
-      res.json({ 'error': 'No spawnId/userId given in URL' });
+      res.json({'error': 'No spawnId/userId given in URL'});
     }
   });
   app.get('/api/spawns/catches', (req, res) => {
@@ -75,8 +76,82 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (e
       });
     } else {
       res.statusCode = 401;
-      res.json({ 'error': 'No userId given in URL' });
+      res.json({'error': 'No userId given in URL'});
     }
+  });
+  app.get('/api/pokemon-list/store', async (req, res) => {
+    const result = await fetch('https://pokeapi.co/api/v2/pokemon?limit=721');
+    const data = await result.json();
+
+    let pokemonList = [];
+    for (let pokemonData of data.results) {
+      const detailResult = await fetch(pokemonData.url);
+      const pokemon = await detailResult.json();
+      const speciesDetailResult = await fetch(pokemon.species.url);
+      const pokemonSpecies = await speciesDetailResult.json();
+      pokemonList.push({
+        id: pokemon.id,
+        name: pokemon.name,
+        images: {
+          default: pokemon.sprites.other.home.front_default,
+          shiny: pokemon.sprites.other.home.front_shiny,
+          thumb: pokemon.sprites.front_default
+        },
+        types: pokemon.types,
+        names: {
+          'en': pokemonSpecies.names.find((specieName) => specieName.language.name === 'en').name,
+          'ja-JP': pokemonSpecies.names.find((specieName) => specieName.language.name === 'ja').name,
+          'ko-KR': pokemonSpecies.names.find((specieName) => specieName.language.name === 'ko').name,
+          'fr-FR': pokemonSpecies.names.find((specieName) => specieName.language.name === 'fr').name,
+          'es-ES': pokemonSpecies.names.find((specieName) => specieName.language.name === 'es').name,
+          'de-DE': pokemonSpecies.names.find((specieName) => specieName.language.name === 'de').name,
+          'it-IT': pokemonSpecies.names.find((specieName) => specieName.language.name === 'it').name,
+          'zh-CN': pokemonSpecies.names.find((specieName) => specieName.language.name === 'zh-Hans').name
+        }
+      });
+    }
+
+    fs.writeFile('pokemon-list.json', JSON.stringify(pokemonList), (err) => {
+      if (err) throw err;
+      res.json(['Data saved!']);
+    });
+  });
+  app.get('/api/pokemon-list/get', async (req, res) => {
+    const pokemonList = fs.readFileSync('pokemon-list.json').toString();
+    res.json(JSON.parse(pokemonList));
+  });
+  app.get('/api/pokemon-types/store', async (req, res) => {
+    const result = await fetch('https://pokeapi.co/api/v2/type?limit=18');
+    const data = await result.json();
+
+    let types = [];
+    for (let type of data.results) {
+      const typeResult = await fetch(type.url);
+      const typeData = await typeResult.json();
+
+      types.push({
+        name: type.name,
+        names: {
+          'en': typeData.names.find((typeName) => typeName.language.name === 'en').name,
+          'ja-JP': typeData.names.find((typeName) => typeName.language.name === 'ja').name,
+          'ko-KR': typeData.names.find((typeName) => typeName.language.name === 'ko').name,
+          'fr-FR': typeData.names.find((typeName) => typeName.language.name === 'fr').name,
+          'es-ES': typeData.names.find((typeName) => typeName.language.name === 'es').name,
+          'de-DE': typeData.names.find((typeName) => typeName.language.name === 'de').name,
+          'it-IT': typeData.names.find((typeName) => typeName.language.name === 'it').name,
+          'zh-CN': typeData.names.find((typeName) => typeName.language.name === 'zh-Hans').name
+        }
+      });
+    }
+
+    fs.writeFile('pokemon-types.json', JSON.stringify(types.sort((a, b) => a.name.localeCompare(b.name))), (err) => {
+      if (err) throw err;
+      res.json(['Data saved!']);
+    });
+  });
+  app.get('/api/pokemon-types/get', async (req, res) => {
+    const pokemonList = fs.readFileSync('pokemon-types.json').toString();
+    res.json(JSON.parse(pokemonList));
   });
 
   app.get('/auth/twitter', passport.authenticate('twitter'));
@@ -86,7 +161,7 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (e
   }));
 
   //Whenever someone connects this gets executed
-  const wss = new WebSocket.Server({ server });
+  const wss = new WebSocket.Server({server});
   let subscribers = {};
 
   wss.getUniqueID = function () {
@@ -161,8 +236,7 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (e
   setInterval(cronTask, 20000);
   cronTask();
 
-  function cronTask()
-  {
+  function cronTask() {
     spawns.deleteTimeBasedSpawns((result) => {
       eventEmitter.emit('spawns:deleted', result);
     });

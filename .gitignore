@@ -8,3 +8,5 @@ npm-debug.log
 docs/css
 docs/js
 docs/images/generated
+pokemon-list.json
+pokemon-types.json
