@@ -44,7 +44,7 @@ class Spawns
         $geoNear: {
           near: { type: 'Point', coordinates: lngLat },
           distanceField: 'metersDifference',
-          maxDistance: 100,
+          maxDistance: 250,
           query: {
             time: { $gt: Date.now() }
           },
@@ -96,7 +96,7 @@ class Spawns
         time: Date.now() + (this.getRandomNumberInRange(15, 30, 0) * 30000),
         value: this.getRandomNumberInRange(1, 10, 0),
         special: (isSpecial === 1),
-        number: this.getRandomNumberInRange(1, 151, 0)
+        number: this.getRandomNumberInRange(1, 721, 0)
       });
     }
 
