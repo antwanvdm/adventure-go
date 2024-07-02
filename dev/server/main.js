@@ -130,6 +130,7 @@ MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (err
       const typeData = await typeResult.json();
 
       types.push({
+        id: typeData.id,
         name: type.name,
         names: {
           'en': typeData.names.find((typeName) => typeName.language.name === 'en').name,
