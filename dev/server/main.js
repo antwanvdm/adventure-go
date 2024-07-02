@@ -145,7 +145,7 @@ MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (err
       });
     }
 
-    fs.writeFile('pokemon-types.json', JSON.stringify(types.sort((a, b) => a.name.localeCompare(b.name))), (err) => {
+    fs.writeFile('pokemon-types.json', JSON.stringify(types), (err) => {
       if (err) throw err;
       res.json(['Data saved!']);
     });
