@@ -95,7 +95,8 @@ MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}, (err
         images: {
           default: pokemon.sprites.other.home.front_default,
           shiny: pokemon.sprites.other.home.front_shiny,
-          thumb: pokemon.sprites.front_default
+          thumb: pokemon.sprites.front_default,
+          gif: pokemon.sprites.other.showdown.front_default
         },
         types: pokemon.types,
         names: {
